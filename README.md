@@ -1,4 +1,4 @@
-# 📰 News App (GNews Edition)
+# 📰 News App
 
 A modern, feature-rich news aggregator application built with **React** and **Vite**, powered by the **GNews API**. This application delivers real-time news updates across multiple categories and languages in a clean, responsive interface.
 
