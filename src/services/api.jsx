@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_KEY = "738a87defb0e42c0c4eedfc56501992b";
-const BASE_URL = "https://gnews.io/api/v4";
+const BASE_URL = "/api";
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
