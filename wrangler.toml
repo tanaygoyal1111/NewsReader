@@ -1,0 +1,6 @@
+name = "news-gnews-proxy"
+main = "worker.js"
+compatibility_date = "2023-12-01"
+
+[observability]
+enabled = true
