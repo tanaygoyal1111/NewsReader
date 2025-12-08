@@ -17,12 +17,15 @@ const Footer = () => {
           <p className="text-slate-400 text-sm">
             © {currentYear} POLITICO LLC. All rights reserved.
           </p>
+          <p className="text-slate-500 text-xs mt-1">
+            The Politico is not responsible for the content of external sites.
+          </p>
         </div>
 
         {/* Social Icons */}
         <div className="flex items-center gap-6">
           <a 
-            href="https://twitter.com" 
+            href="https://twitter.com/TanayGoyal9" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-white transition-colors transform hover:scale-110"
@@ -31,7 +34,7 @@ const Footer = () => {
             <Twitter className="w-6 h-6" />
           </a>
           <a 
-            href="https://instagram.com" 
+            href="https://instagram.com/tanay_goyal" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-white transition-colors transform hover:scale-110"
@@ -40,7 +43,7 @@ const Footer = () => {
             <Instagram className="w-6 h-6" />
           </a>
           <a 
-            href="https://linkedin.com" 
+            href="https://www.linkedin.com/in/tanay-goyal-325a37298" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-white transition-colors transform hover:scale-110"
