@@ -56,7 +56,7 @@ const Category = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 text-center border-b border-slate-200 pb-8">
-          <h2 className="text-5xl font-black font-serif uppercase tracking-tight mb-2">
+          <h2 className="text-3xl md:text-5xl font-black font-serif uppercase tracking-tight mb-2">
             {id}
           </h2>
         </div>
@@ -72,7 +72,7 @@ const Category = () => {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 text-center border-b border-slate-200 pb-8">
-          <h2 className="text-5xl font-black font-serif uppercase tracking-tight mb-2">
+          <h2 className="text-3xl md:text-5xl font-black font-serif uppercase tracking-tight mb-2">
             {id}
           </h2>
           <p className="text-slate-500 font-serif text-lg">
