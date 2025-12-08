@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 import NotificationToast from '../components/NotificationToast';
 import PullToRefresh from '../components/PullToRefresh';
 import { useLanguage } from '../context/LanguageContext';
+import { useToast } from '../context/ToastContext';
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search')?.toLowerCase() || '';
   const { language } = useLanguage();
+  const { addToast } = useToast();
 
   useEffect(() => {
     const load = async () => {
@@ -30,6 +32,7 @@ const Home = () => {
       } else {
         // Fallback or Mock data logic here if desired
         console.log("Failed to load or using mock");
+        addToast("Failed to load news. Please check your connection.", "error");
       }
       // Wait for 2 seconds before hiding loader
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -60,7 +63,7 @@ const Home = () => {
 
   const handleRefresh = async () => {
     setLoading(true);
-    const result = await fetchHomeData(language);
+    const result = await fetchHomeData(language, true);
     if (result) {
       setData(result);
       if (result.general && result.general.length > 0) {

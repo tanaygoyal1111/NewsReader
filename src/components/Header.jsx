@@ -80,14 +80,14 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Search news..."
-                className="border border-slate-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:border-red-600 transition-all"
+                className="hidden md:block border border-slate-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:border-red-600 transition-all"
                 value={searchParams.get('search') || ''}
                 onChange={handleSearch}
                 autoFocus
               />
             )}
             <button 
-              className="p-2 hover:bg-slate-100 rounded-full"
+              className="hidden md:block p-2 hover:bg-slate-100 rounded-full"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             >
               {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
@@ -115,6 +115,17 @@ const Header = () => {
 
       {isMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-xl p-4 md:hidden flex flex-col gap-4 font-bold font-sans">
+          <div className="relative">
+             <input
+                type="text"
+                placeholder="Search news..."
+                className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-red-600 transition-all"
+                value={searchParams.get('search') || ''}
+                onChange={handleSearch}
+              />
+              <Search className="absolute right-3 top-2.5 w-4 h-4 text-slate-400" />
+          </div>
+
           <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-left uppercase p-2 border-l-4 border-black bg-slate-50">
             Home
           </Link>
