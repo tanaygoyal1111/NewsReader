@@ -63,7 +63,7 @@ const Home = () => {
 
   const handleRefresh = async () => {
     setLoading(true);
-    const result = await fetchHomeData(language, true);
+    const result = await fetchHomeData(language);
     if (result) {
       setData(result);
       if (result.general && result.general.length > 0) {
