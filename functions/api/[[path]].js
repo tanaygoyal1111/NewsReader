@@ -25,10 +25,8 @@ export async function onRequest(context) {
         'User-Agent': 'Cloudflare-Pages-News-App'
       }
     });
-
     // Create a new response to return to the client
     const newResponse = new Response(response.body, response);
-    
     // Add CORS headers to allow the frontend to access the response
     // Since this is same-origin (served from the same domain), strictly speaking
     // we might not need * if we just fetch from /api, but it's safe to add.

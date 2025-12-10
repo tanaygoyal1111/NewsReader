@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { Search, Menu, X, Globe, Heart } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -7,19 +7,19 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const navigate = useNavigate();
+
   const location = useLocation();
   const { language, setLanguage, languages } = useLanguage();
 
   const handleSearch = (e) => {
     const term = e.target.value;
+    const newParams = new URLSearchParams(searchParams);
     if (term) {
-      setSearchParams({ ...Object.fromEntries(searchParams), search: term });
+      newParams.set('search', term);
     } else {
-      const newParams = Object.fromEntries(searchParams);
-      delete newParams.search;
-      setSearchParams(newParams);
+      newParams.delete('search');
     }
+    setSearchParams(newParams);
   };
 
   const isActive = (path) => location.pathname.includes(path);

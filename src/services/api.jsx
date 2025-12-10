@@ -51,45 +51,7 @@ apiClient.interceptors.response.use(
   }
 );
 
-// Cache configuration
-const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
-const CACHE_PREFIX = 'news_app_cache_';
 
-// Helper to get data from cache
-const getFromCache = (key) => {
-  try {
-    const cached = localStorage.getItem(CACHE_PREFIX + key);
-    if (!cached) return null;
-
-    const { data, timestamp } = JSON.parse(cached);
-    const age = Date.now() - timestamp;
-
-    if (age < CACHE_DURATION) {
-      console.log(`[Cache Hit] ${key}`);
-      return data;
-    } else {
-      console.log(`[Cache Expired] ${key}`);
-      localStorage.removeItem(CACHE_PREFIX + key);
-      return null;
-    }
-  } catch (error) {
-    console.error("Cache read error:", error);
-    return null;
-  }
-};
-
-// Helper to save data to cache
-const saveToCache = (key, data) => {
-  try {
-    const cacheItem = {
-      data,
-      timestamp: Date.now()
-    };
-    localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(cacheItem));
-  } catch (error) {
-    console.error("Cache write error:", error);
-  }
-};
 
 // Helper to map GNews format to NewsAPI format (to keep UI compatible)
 const mapArticles = (articles) => {
@@ -104,15 +66,10 @@ const mapArticles = (articles) => {
 };
 
 // Fetch function for the dashboard (Home)
-export const fetchHomeData = async (lang = 'en', forceRefresh = false) => {
-  const cacheKey = `home_data_${lang}`;
-  
-  if (!forceRefresh) {
-    const cachedData = getFromCache(cacheKey);
-    if (cachedData) return cachedData;
-  }
+export const fetchHomeData = async (lang = 'en') => {
 
-  try {
+
+  try{
     // GNews topics: breaking-news, world, nation, business, technology, entertainment, sports, science, health
     const [general, politics, business] = await Promise.all([
       apiClient.get('/top-headlines', { params: { lang, max: 6 } }),
@@ -126,7 +83,7 @@ export const fetchHomeData = async (lang = 'en', forceRefresh = false) => {
       business: mapArticles(business.data.articles)
     };
 
-    saveToCache(cacheKey, data);
+
     return data;
   } catch (error) {
     console.error("Error fetching home data:", error);
@@ -137,13 +94,8 @@ export const fetchHomeData = async (lang = 'en', forceRefresh = false) => {
 };
 
 // Fetch function for specific categories
-export const fetchCategoryData = async (category, lang = 'en', forceRefresh = false) => {
-  const cacheKey = `category_${category}_${lang}`;
+export const fetchCategoryData = async (category, lang = 'en') => {
 
-  if (!forceRefresh) {
-    const cachedData = getFromCache(cacheKey);
-    if (cachedData) return cachedData;
-  }
 
   // Map categories to GNews topics
   const topicMap = {
@@ -164,7 +116,7 @@ export const fetchCategoryData = async (category, lang = 'en', forceRefresh = fa
       params: { topic, lang, max: 20 } 
     });
     const data = mapArticles(response.data.articles);
-    saveToCache(cacheKey, data);
+
     return data;
   } catch (error) {
     console.error(`Error fetching ${category}:`, error);
@@ -174,32 +126,13 @@ export const fetchCategoryData = async (category, lang = 'en', forceRefresh = fa
 
 // Fetch just the latest headline to check for updates
 export const fetchLatestHeadline = async (lang = 'en') => {
-  // Short cache for latest headline check (e.g., 2 minutes)
-  const cacheKey = `latest_headline_${lang}`;
-  const SHORT_CACHE_DURATION = 2 * 60 * 1000;
-
   try {
-    const cached = localStorage.getItem(CACHE_PREFIX + cacheKey);
-    if (cached) {
-      const { data, timestamp } = JSON.parse(cached);
-      if (Date.now() - timestamp < SHORT_CACHE_DURATION) {
-        return data;
-      }
-    }
-
     const response = await apiClient.get('/top-headlines', { 
       params: { lang, max: 1 } 
     });
     
     if (response.data.articles && response.data.articles.length > 0) {
-      const data = response.data.articles[0];
-      // Save with short duration logic (manually handled here or just use same saveToCache but ignore standard duration in read)
-      // We'll just use saveToCache and rely on the read logic above to check SHORT_CACHE_DURATION
-      // Actually saveToCache just saves timestamp. The read logic determines validity.
-      // But getFromCache uses global CACHE_DURATION. So we manually read/write here or make getFromCache flexible.
-      // Let's just manually write/read for this specific case to keep it simple.
-      localStorage.setItem(CACHE_PREFIX + cacheKey, JSON.stringify({ data, timestamp: Date.now() }));
-      return data;
+      return response.data.articles[0];
     }
     return null;
   } catch (error) {
