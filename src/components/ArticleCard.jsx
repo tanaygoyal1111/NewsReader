@@ -3,7 +3,7 @@ import { Share2, Heart, Volume2, StopCircle } from 'lucide-react';
 import { addToFavorites, removeFromFavorites, isFavorite } from '../services/db';
 import ShareMenu from './ShareMenu';
 import { useLanguage } from '../context/LanguageContext';
-import { useToast } from '../context/ToastContext';
+
 import placeholderGeneral from '../assets/placeholder-general.png';
 import placeholderBusiness from '../assets/placeholder-business.png';
 import placeholderPolitics from '../assets/placeholder-politics.png';
@@ -29,7 +29,7 @@ const ArticleCard = ({ article, variant = 'standard', category = 'general' }) =>
   const [isSpeaking, setIsSpeaking] = useState(false);
   const shareRef = useRef(null);
   const { language } = useLanguage();
-  const { addToast } = useToast();
+
   const placeholderImage = placeholders[category.toLowerCase()] || placeholders.general;
 
   useEffect(() => {
@@ -60,11 +60,11 @@ const ArticleCard = ({ article, variant = 'standard', category = 'general' }) =>
     if (isBookmarked) {
       await removeFromFavorites(article.url);
       setIsBookmarked(false);
-      addToast("Article removed from favorites", "info");
+
     } else {
       await addToFavorites(article);
       setIsBookmarked(true);
-      addToast("Article saved to favorites", "success");
+
     }
   };
 

@@ -3,9 +3,9 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { fetchCategoryData } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
 import Loader from '../components/Loader';
-import PullToRefresh from '../components/PullToRefresh';
+
 import { useLanguage } from '../context/LanguageContext';
-import { useToast } from '../context/ToastContext';
+
 
 const Category = () => {
   const { id } = useParams(); // Matches route /category/:id
@@ -14,7 +14,7 @@ const Category = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search')?.toLowerCase() || '';
   const { language } = useLanguage();
-  const { addToast } = useToast();
+
 
   const load = async () => {
     setLoading(true);
@@ -23,7 +23,7 @@ const Category = () => {
     if (result) {
       setArticles(result);
     } else {
-      addToast(`Failed to load ${id} news.`, "error");
+      console.error(`Failed to load ${id} news.`);
     }
     // Wait for 2 seconds before hiding loader
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -34,14 +34,7 @@ const Category = () => {
     load();
   }, [id, language]);
 
-  const handleRefresh = async () => {
-    setLoading(true);
-    const result = await fetchCategoryData(id, language, true);
-    if (result) {
-      setArticles(result);
-    }
-    setLoading(false);
-  };
+
 
   if (loading) return <Loader />;
 
@@ -69,7 +62,7 @@ const Category = () => {
   }
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
+
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 text-center border-b border-slate-200 pb-8">
           <h2 className="text-3xl md:text-5xl font-black font-serif uppercase tracking-tight mb-2">
@@ -86,7 +79,7 @@ const Category = () => {
           ))}
         </div>
       </div>
-    </PullToRefresh>
+
   );
 };
 
