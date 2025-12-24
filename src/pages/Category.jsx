@@ -7,6 +7,8 @@ import Loader from '../components/Loader';
 import { useLanguage } from '../context/LanguageContext';
 
 
+import PullToRefresh from '../components/PullToRefresh';
+
 const Category = () => {
   const { id } = useParams(); // Matches route /category/:id
   const [articles, setArticles] = useState([]);
@@ -34,7 +36,9 @@ const Category = () => {
     load();
   }, [id, language]);
 
-
+  const handleRefresh = async () => {
+    await load();
+  };
 
   if (loading) return <Loader />;
 
@@ -62,7 +66,7 @@ const Category = () => {
   }
 
   return (
-
+    <PullToRefresh onRefresh={handleRefresh}>
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8 text-center border-b border-slate-200 pb-8">
           <h2 className="text-3xl md:text-5xl font-black font-serif uppercase tracking-tight mb-2">
@@ -79,7 +83,7 @@ const Category = () => {
           ))}
         </div>
       </div>
-
+    </PullToRefresh>
   );
 };
 

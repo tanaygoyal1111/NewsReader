@@ -10,6 +10,8 @@ import { useLanguage } from '../context/LanguageContext';
 
 
 
+import PullToRefresh from '../components/PullToRefresh';
+
 const Home = () => {
   const [data, setData] = useState({ general: [], politics: [], business: [] });
   const [loading, setLoading] = useState(true);
@@ -100,7 +102,7 @@ const Home = () => {
 
 
   return (
-
+    <PullToRefresh onRefresh={handleRefresh}>
       <main className="container mx-auto px-4 py-8 relative">
         {showNotification && (
           <NotificationToast 
@@ -142,7 +144,7 @@ const Home = () => {
           ))}
         </div>
       </main>
-
+    </PullToRefresh>
   );
 };
 
