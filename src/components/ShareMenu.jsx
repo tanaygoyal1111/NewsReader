@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Copy, Twitter, Linkedin, Facebook, MessageCircle, Check } from 'lucide-react';
-
+import { useToast } from '../context/ToastContext';
 
 const ShareMenu = ({ article, onClose }) => {
   const [copied, setCopied] = useState(false);
-
+  const { addToast } = useToast();
   const shareUrl = article.url;
   const shareText = article.title;
   
@@ -13,7 +13,7 @@ const ShareMenu = ({ article, onClose }) => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-
+      addToast("Link copied to clipboard!", "success");
       setTimeout(() => {
         setCopied(false);
         onClose();

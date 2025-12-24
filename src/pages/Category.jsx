@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { fetchCategoryData } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
 import Loader from '../components/Loader';
-
+import PullToRefresh from '../components/PullToRefresh';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
-
-
-import PullToRefresh from '../components/PullToRefresh';
 
 const Category = () => {
   const { id } = useParams(); // Matches route /category/:id
@@ -19,29 +16,31 @@ const Category = () => {
   const { language } = useLanguage();
   const { addToast } = useToast();
 
-
-  const load = useCallback(async () => {
+  const load = async () => {
     setLoading(true);
     window.scrollTo(0, 0);
     const result = await fetchCategoryData(id, language);
     if (result) {
       setArticles(result);
     } else {
-      console.error(`Failed to load ${id} news.`);
-      addToast(`Failed to load ${id} news. Please try again later.`, "error");
+      addToast(`Failed to load ${id} news.`, "error");
     }
     // Wait for 2 seconds before hiding loader
     await new Promise(resolve => setTimeout(resolve, 300));
     setLoading(false);
-  }, [id, language, addToast]);
+  };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, [load]);
+  }, [id, language]);
 
   const handleRefresh = async () => {
-    await load();
+    setLoading(true);
+    const result = await fetchCategoryData(id, language, true);
+    if (result) {
+      setArticles(result);
+    }
+    setLoading(false);
   };
 
   if (loading) return <Loader />;

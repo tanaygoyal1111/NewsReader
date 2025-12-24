@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import { ToastProvider } from './context/ToastContext';
 import ToastContainer from './components/ToastContainer';
-
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -19,7 +18,6 @@ function App() {
         <div className="min-h-screen bg-white text-slate-900 font-sans flex flex-col">
           <OfflineNotice />
           <ToastContainer />
-
           <Header />
           <div className="flex-grow">
             <Routes>

@@ -5,13 +5,10 @@ import ArticleCard from '../components/ArticleCard';
 import SectionHeader from '../components/SectionHeader';
 import Loader from '../components/Loader';
 import NotificationToast from '../components/NotificationToast';
-
+import PullToRefresh from '../components/PullToRefresh';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 
-
-
-import PullToRefresh from '../components/PullToRefresh';
 
 const Home = () => {
   const [data, setData] = useState({ general: [], politics: [], business: [] });
@@ -22,7 +19,6 @@ const Home = () => {
   const searchTerm = searchParams.get('search')?.toLowerCase() || '';
   const { language } = useLanguage();
   const { addToast } = useToast();
-
 
   useEffect(() => {
     const load = async () => {
@@ -43,7 +39,7 @@ const Home = () => {
       setLoading(false);
     };
     load();
-  }, [language, addToast]); // Reload when language changes
+  }, [language]); // Reload when language changes
 
   // Polling for new articles
   useEffect(() => {
@@ -67,7 +63,7 @@ const Home = () => {
 
   const handleRefresh = async () => {
     setLoading(true);
-    const result = await fetchHomeData(language);
+    const result = await fetchHomeData(language, true);
     if (result) {
       setData(result);
       if (result.general && result.general.length > 0) {
