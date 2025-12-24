@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { WifiOff, Wifi } from 'lucide-react';
 
 const OfflineNotice = () => {
-  const [showOffline, setShowOffline] = useState(false);
+  const [showOffline, setShowOffline] = useState(!navigator.onLine);
   const [showOnline, setShowOnline] = useState(false);
 
   useEffect(() => {
     // Check initial state
     if (!navigator.onLine) {
-      setShowOffline(true);
       const timer = setTimeout(() => setShowOffline(false), 3000);
       return () => clearTimeout(timer);
     }

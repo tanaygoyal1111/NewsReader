@@ -43,7 +43,7 @@ const Home = () => {
       setLoading(false);
     };
     load();
-  }, [language]); // Reload when language changes
+  }, [language, addToast]); // Reload when language changes
 
   // Polling for new articles
   useEffect(() => {

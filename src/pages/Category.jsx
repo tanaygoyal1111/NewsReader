@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { fetchCategoryData } from '../services/api';
 import ArticleCard from '../components/ArticleCard';
@@ -20,7 +20,7 @@ const Category = () => {
   const { addToast } = useToast();
 
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     window.scrollTo(0, 0);
     const result = await fetchCategoryData(id, language);
@@ -33,11 +33,12 @@ const Category = () => {
     // Wait for 2 seconds before hiding loader
     await new Promise(resolve => setTimeout(resolve, 300));
     setLoading(false);
-  };
+  }, [id, language, addToast]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, [id, language]);
+  }, [load]);
 
   const handleRefresh = async () => {
     await load();
