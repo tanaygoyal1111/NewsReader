@@ -5,6 +5,7 @@ import ArticleCard from '../components/ArticleCard';
 import Loader from '../components/Loader';
 
 import { useLanguage } from '../context/LanguageContext';
+import { useToast } from '../context/ToastContext';
 
 
 import PullToRefresh from '../components/PullToRefresh';
@@ -16,6 +17,7 @@ const Category = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search')?.toLowerCase() || '';
   const { language } = useLanguage();
+  const { addToast } = useToast();
 
 
   const load = async () => {
@@ -26,6 +28,7 @@ const Category = () => {
       setArticles(result);
     } else {
       console.error(`Failed to load ${id} news.`);
+      addToast(`Failed to load ${id} news. Please try again later.`, "error");
     }
     // Wait for 2 seconds before hiding loader
     await new Promise(resolve => setTimeout(resolve, 300));
